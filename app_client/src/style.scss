@@ -1,0 +1,228 @@
+@import './buttons';
+@import './chart';
+body {
+    color: #333;
+
+}
+.hidden {
+    display: none;
+}
+#faker_trader {
+    background-image: url('/assets/bg_login.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+// What the hell is this for
+li {
+    height: auto !important;
+}
+
+img.f-avatar {
+    width: 4em;
+    height: 4em;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,1);
+    vertical-align: middle;
+    margin-right: 1em;
+    transition: all 1s ease-out;
+    &:hover {
+        transition: all 0.1s ease-out;
+        transform: scale(1.2)
+    }
+}
+
+
+
+.f-pad {
+    padding: 1em;
+    @media screen and (max-width: 35.5em) {
+        padding: 0.5em;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Modal
+// -----------------------------------------------------------------------------
+.f-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.3);
+    z-index: 2;
+    .f-window {
+        position: fixed;
+        top: 50vh;
+        left: 50vw;
+        min-width: 30em;
+        min-height: 20em;
+        transform: translate(-50%, -50%);
+        padding: 1em;
+        background: white;
+        box-shadow: 0 0 10em rgba(0,0,0,0.2), 0.5em 0.5em 2em rgba(0,0,0,0.7);
+        @media screen and (max-width: 35.5em) {
+            width: 100vw;
+            height: 100vh;
+        }
+        h2 {
+            color: white;
+            margin: -0.85rem -0.85rem 1em -0.85rem;
+            padding: 0.5rem;
+            background: darkgrey;
+        }
+        &.warning {
+            h2 {
+                color: white;
+                background: maroon;
+            }
+        }
+    }
+    .f-buttonbar {
+        position: absolute;
+        bottom: 1em;
+        right: 0;
+        text-align: center;
+        width: 100%;
+        button {
+            float: none;
+            margin: 0 0.25em;
+        }
+    }
+    .content {
+        color: #333;
+        text-shadow: none;
+    }
+}
+
+
+// -----------------------------------------------------------------------------
+// Login window only
+// -----------------------------------------------------------------------------
+.f-user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+        padding-bottom: 1em;
+    }
+}
+.f-login-form {
+    position: fixed;
+    left: 50vw;
+    top: 50vh;
+    padding: 3em;
+    border: 1px solid lightgrey;
+    transform: translate(-50%, -50%);
+    border-radius: 0.3em;
+    background: white;
+    box-shadow: 0 0 10em rgba(0,0,0,0.05), 0 0 2em rgba(0,0,0,0.1);
+}
+
+// -----------------------------------------------------------------------------
+// Dashboard only
+// -----------------------------------------------------------------------------
+.f-top-bar {
+    position: fixed;
+    width: 100vw;   
+    background: white;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    z-index: 1;
+    box-shadow: 0 0 10em rgba(0,0,0,0.05), 0 0 1em rgba(0,0,0,0.3);
+}
+.f-dashboard {
+    .f-avatar {
+        width: 2em;
+        height: 2em;
+    }
+    .f-bar-item {
+        width: auto;
+        float: left;
+        padding-right: 1em;
+    }
+    .f-top-menu {
+        width: auto;
+        float: right;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Sidebar only
+// -----------------------------------------------------------------------------
+.f-side-bar {
+    min-height: 100vh;
+    padding-top: 4.5em;
+    background: rgba(255,255,255,0.85);
+    border-right: 1px solid rgba(0,0,0,0.3);
+    @media screen and (max-width: 35.5em) {
+        border: none;
+        min-height: auto;
+    }
+    .pure-menu-horizontal {
+        border-top: 1px solid #a5a5a5;
+        border-bottom: 1px solid #a5a5a5;
+    }
+    h2 {
+        font-weight: normal;
+        margin: 1em 0.5em 0.5em 0.5em;
+    }
+}
+
+.f-button-table {
+    width: 100%;
+    td {
+        padding: 0.5em;
+        text-align: center;
+        vertical-align: middle;
+    }
+}
+.f-ledger {
+    text-align: right;
+    h3 {
+        display: inline;
+    }
+}
+.f-nav {
+    hr {
+        border: none;
+        height: 1px;
+        background-color: rgba(0,0,0,0.3);
+    }
+}
+
+.f-trade table {
+    width: 100%;
+    font-size: 0.8em;
+    td:first-child {
+        min-width: 25%;
+    }
+
+    button {
+        float: right;
+    }
+}
+
+
+// -----------------------------------------------------------------------------
+// Sidebar trade setup
+// -----------------------------------------------------------------------------
+.f-side-order-menu {
+    margin-top: -1px;
+}
+.f-order {
+    input {
+        width: 100%;
+        height: 2em;
+        margin: 0.5em 0;
+    }
+}
+
+
+// -----------------------------------------------------------------------------
+// Main content setup   
+// -----------------------------------------------------------------------------
+.f-main-content {
+    padding-top: 4.5em;
+}
