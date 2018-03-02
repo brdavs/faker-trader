@@ -32,7 +32,7 @@ source ./env/bin/activate
 echo "Upgrading pip and setuptools"
 pip install --upgrade pip setuptools
 echo "Installing python modules"
-pip install pyramid waitress peewee websocket-client git+https://github.com/dpallot/simple-websocket-server.git
+pip install python-dateutil pyramid waitress peewee websocket-client git+https://github.com/dpallot/simple-websocket-server.git
 
 # init db
 echo "Initializing database"

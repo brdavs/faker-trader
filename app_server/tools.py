@@ -31,12 +31,15 @@ def handle_order(order):
             order.open = datetime.datetime.now()
             order.open_value = last_price().value
             order.save()
+        updateLedger(order)
         return order
+
 
     # If order has an open value it's a LIMIT order.
     if order.open_value and order.amount:
         with db.atomic() as txn:
             order.save()
+            updateLedger(order)
             return order
 
     return {'message': 'Something was wrong with this order.'}

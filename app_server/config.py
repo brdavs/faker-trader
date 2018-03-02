@@ -9,3 +9,4 @@ DEFAULT_LEDGER = {
     'value': 10000,
     'asset_id': 1
 }
+DEFAULT_COIN_PRICE = 500

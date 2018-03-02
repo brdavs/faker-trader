@@ -100,6 +100,7 @@ class FakeData(WebSocket):
             # Any other message than ident originates from server,
             # so we simpli forward it to the right client
             else:
+                print('Recieved message for user %s' % int(id))
                 clients[int(id)].sendMessage(self.data)
 
 
@@ -124,7 +125,7 @@ class FakeData(WebSocket):
 
 def main_websocket():
     print('Running websockets server on port: ' + str(WEBSOCKETS_PORT))
-    thread = threading.Thread(target=generator, args=({'value': 100}, clients))
+    thread = threading.Thread(target=generator, args=({'value': DEFAULT_COIN_PRICE}, clients))
     thread.start()
     server = SimpleWebSocketServer('', WEBSOCKETS_PORT, FakeData)
     server.serveforever()
