@@ -1,13 +1,13 @@
 # Faker Trader
 
 Faker Treader is a toy investing tool created for amusement and exploration of technology.
-It is not connected to any exchange, nor does it actually trade anything. It generates fake price for fake crypto currency **COIN** data. The fake data might change later, as algorithm for it is crude and plain bad.
+It is not connected to any exchange, nor does it actually trade anything. It generates fake price for fake crypto currency **COIN** data. The fake data might change later, as algorithm for it is just too crude.
 
 
 ## Installation
 ##### Via install script:
 If you are using a recent Linux system, the install script should do everything.
-You do - however - need basic development tools and some standard unix utilities. If you decide to run INSTALL.sh your python and all needed libraries will be downloaded and compiled for you in a virtual environment right inside this directory. If you decide to erase the project, everything will be contained in this directory.
+You do - however - need basic development tools and some standard unix utilities. If you decide to run INSTALL.sh your python and all needed libraries will be downloaded and compiled for you in a virtual environment right inside this directory. If you decide to erase the project - everything is contained in this directory. When you delete it, your machine is clean.
 
 I have purposefully left out all Node related stuff for client development. There is a preassembled version of client served right from the python app. No need to run node.
 
@@ -44,6 +44,25 @@ cd app_server
 PYTHONPATH=./ python main.py
 
 ```
+
+After tahat, you should point your browser to **http://localhost:8000**.  
+IE has not (and will not) be tested.
+
+## Tools
+
+#### Server
+- Python 3.6.4
+- Pyramid
+- SQLite3
+
+#### Client
+- Inferno.js
+- Purecss
+- TechanJS (not yet)
+- D3
+
+For client development I use a complete Node environment with a myriad of libs.
+
 
 ## Fine print
 
