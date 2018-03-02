@@ -1,0 +1,9 @@
+.idea
+.vscode
+__pycache__
+test
+tmp
+node_modules
+app_client/www
+data.db
+data.sql
