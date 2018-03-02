@@ -3,6 +3,8 @@
 Faker Treader is a toy investing tool created for amusement and exploration of technology.
 It is not connected to any exchange, nor does it actually trade anything. It generates fake price for fake crypto currency **COIN** data. The fake data might change later, as algorithm for it is just too crude.
 
+## Urgent
+Arythmetics is WRONG. On many levels, I need to revise it completely.
 
 ## Installation
 ##### Via install script:
