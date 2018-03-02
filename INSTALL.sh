@@ -1,5 +1,3 @@
-
-
 #!/bin/bash
 
 # make temp dir

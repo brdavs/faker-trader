@@ -35,8 +35,12 @@ export class Sidebar extends Component {
             // We send user ID and hash as ident immediately back
             if(what=='ident') self.w.send(`MESSAGE;ident;${data};${this.state.user.id}`)
             // We reload orders if needed
-            if(what=='reload' & data == 'orders')  orders.get()
-                .then(o => this.state.user.orders = o)
+            if(what=='reload' & data == 'orders') 
+                orders.get()
+                .then(o => {
+                    this.state.user.orders = o
+                    this.updateNav(this.state.value[0])
+                })
 
 
             // Then run our course
@@ -54,6 +58,7 @@ export class Sidebar extends Component {
             .map(n => n.includes('.') ? parseFloat(n) : parseInt(n) ? parseInt(n) : n)
 
         this.state.user.ledgers.forEach(l => {
+            if(!asset) return
             value[asset] = [v, value[asset][0]]
         })
         this.setState({value})
