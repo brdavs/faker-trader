@@ -67,7 +67,6 @@ export class SidebarNewOrder extends Component {
     render() {
         return (
             <div class="pure-u-1">
-            {this.state.order._type}
                 <h2>Trade</h2>
                 <div class="pure-menu pure-menu-horizontal f-side-order-menu">
                     <ul class="pure-menu-list">
