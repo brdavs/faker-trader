@@ -1,10 +1,8 @@
 # Faker Trader
 
 Faker Treader is a toy investing tool created for amusement and exploration of technology.
-It is not connected to any exchange, nor does it actually trade anything. It generates fake price for fake crypto currency **COIN** data. The fake data might change later, as algorithm for it is just too crude.
+It is not connected to any exchange, nor does it actually trade anything. It generates fake price for fake crypto currency **COIN** data. The fake data might change later, as algorithm for it is just too crude. The algorithm however allows for quick changes in price to see how platform reacts.
 
-## Urgent
-Arythmetics is WRONG. On many levels, I need to revise it completely.
 
 ## Installation
 ##### Via install script:
@@ -68,7 +66,7 @@ For client development I use a complete Node environment with a myriad of libs.
 
 ## Fine print
 
-* SQLite3 is rather sub-optimal for this type of operation. A proper way would be to store generated price data into a key-value store
+* SQLite3 is rather sub-optimal for this type of operation. A proper way would be to store generated price data into a key-value store. I used 2 distinct databases. One is constantly updated with data, one holds user other data.
 * The chart is missing. I have yet to implement it.
 * There is no spread on trades.
 * Margin calls are not accurate.
