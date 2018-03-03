@@ -74,29 +74,26 @@ export class SidebarOrders extends Component {
                                 <td>Order ID:</td><td>{t.id}</td>
                             </tr>
                             <tr>
-                                <td>Amount:</td><td>{t.amount.toFixed(4)}</td>
-                            </tr>
-                            <tr>
                                 <td>Open:</td><td>{transformDate(t.open)}</td>
                             </tr>
                             <tr>
-                                <td>Open amount:</td><td>{t.amount.toFixed(4)} COIN</td>
+                                <td>Open value:</td><td>{t.open_value.toFixed(4)} €</td>
                             </tr>
                             <tr>
-                                <td>Open value:</td><td>{t.open_value.toFixed(4)} EUR</td>
+                                <td>Direction:</td><td>{t.direction ? 'Buy' : 'Sell'}</td>
                             </tr>
                             <tr>
-                                <td>Type:</td><td>{t.direction ? 'Buy' : 'Sell'}</td>
+                                <td>Amount:</td><td>{t.amount.toFixed(4)} €</td>
                             </tr>
                             <tr>
-                                <td>Earnings:</td><td>{t.earnings ? t.earnings.toFixed(4) : null} EUR</td>
+                                <td>Amount in COIN:</td><td>{t.amount_in_quote ? t.amount_in_quote.toFixed(4) : null} COIN</td>
                             </tr>
                             <tr>
-                                <td>Earnings %:</td><td>{t.earnings_percent ? t.earnings_percent.toFixed(4) : null} %</td>
+                                <td>Earnings:</td><td>{t.earnings ? t.earnings.toFixed(4) : null} €</td>
                             </tr>
-                            {/* <tr>
-                                <td>% of Ledger:</td><td>{this.calcPercentOfLedger(this.calcAmount(t))} %</td>
-                            </tr> */}
+                            <tr>
+                                <td>Earnings %:</td><td>{t.percent_gain ? t.percent_gain.toFixed(4) : null} %</td>
+                            </tr>
                             <tr>
                                 <td colspan="2">
                                     <ModalCloseTrade user={this.state.user} trade={t}/>
@@ -115,19 +112,19 @@ export class SidebarOrders extends Component {
                                 <td>Order ID:</td><td>{t.id}</td>
                             </tr>
                             <tr>
-                                <td>Amount:</td><td>{t.amount.toFixed(4)}</td>
+                                <td>Amount:</td><td>{t.amount.toFixed(4)} €</td>
                             </tr>
                             <tr>
                                 <td>created:</td><td>{transformDate(t.created)}</td>
                             </tr>
                             <tr>
-                                <td>Open at:</td><td>{t.open_value}</td>
+                                <td>Open at:</td><td>{t.open_value} €</td>
                             </tr>
                             <tr>
                                 <td>Type:</td><td>{t.direction ? 'Buy' : 'Sell'}</td>
                             </tr>
                             <tr>
-                                <td>Distance:</td><td>{t.distance_to_open ? t.distance_to_open.toFixed(4) : null}</td>
+                                <td>Distance:</td><td>{t.distance_to_open ? t.distance_to_open.toFixed(4) : null} €</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -147,28 +144,28 @@ export class SidebarOrders extends Component {
                                 <td>Order ID:</td><td>{t.id}</td>
                             </tr>
                             <tr>
-                                <td>Amount:</td><td>{t.amount.toFixed(4)}</td>
+                                <td>Amount:</td><td>{t.amount.toFixed(4)} €</td>
                             </tr>
                             <tr>
                                 <td>Open:</td><td>{transformDate(t.open)}</td>
                             </tr>
                             <tr>
-                                <td>Open value:</td><td>{t.open_value.toFixed(4)}</td>
+                                <td>Open value:</td><td>{t.open_value.toFixed(4)} €</td>
                             </tr>
                             <tr>
                                 <td>Close:</td><td>{transformDate(t.close)}</td>
                             </tr>
                             <tr>
-                                <td>Close value:</td><td>{t.close_value.toFixed(4)}</td>
+                                <td>Close value:</td><td>{t.close_value.toFixed(4)} €</td>
                             </tr>
                             <tr>
                                 <td>Type:</td><td>{t.direction ? 'Buy' : 'Sell'}</td>
                             </tr>
                             <tr>
-                                <td>Earnings:</td><td>{this.closedOrderEarnings(t).value.toFixed(4)} EUR</td>
+                                <td>Earnings:</td><td>{(t.close_value - t.open_value).toFixed(4)} €</td>
                             </tr>
                             <tr>
-                                <td>Earnings %:</td><td>{this.closedOrderEarnings(t).percent.toFixed(4)} %</td>
+                                <td>Earnings %:</td><td>{((t.close_value / t.open_value  - 1) * 100).toFixed(4) } %</td>
                             </tr>
                             {t.comment ?
                                 <tr>

@@ -49,6 +49,7 @@ img.f-avatar {
     position: fixed;
     top: 0;
     left: 0;
+    text-align: left;
     width: 100vw;
     height: 100vh;
     background: rgba(0,0,0,0.3);
@@ -57,10 +58,11 @@ img.f-avatar {
         position: fixed;
         top: 50vh;
         left: 50vw;
-        min-width: 30em;
-        min-height: 20em;
+        text-align: center;
+        min-width: 25em;
+        min-height: 18em;
         transform: translate(-50%, -50%);
-        padding: 1em;
+        padding: 1;
         background: white;
         box-shadow: 0 0 10em rgba(0,0,0,0.2), 0.5em 0.5em 2em rgba(0,0,0,0.7);
         @media screen and (max-width: 35.5em) {
@@ -68,10 +70,9 @@ img.f-avatar {
             height: 100vh;
         }
         h2 {
-            color: white;
-            margin: -0.85rem -0.85rem 1em -0.85rem;
-            padding: 0.5rem;
-            background: darkgrey;
+            color: #333;
+            padding-bottom: 0.5em;
+            border-bottom: 1px solid rgba(0,0,0,0.3);
         }
         &.warning {
             h2 {
@@ -79,21 +80,25 @@ img.f-avatar {
                 background: maroon;
             }
         }
-    }
-    .f-buttonbar {
-        position: absolute;
-        bottom: 1em;
-        right: 0;
-        text-align: center;
-        width: 100%;
-        button {
-            float: none;
-            margin: 0 0.25em;
+        .f-buttonbar {
+            position: absolute;
+            box-sizing: border-box;
+            text-align: right;
+            bottom: 1em;
+            width: 100%;
+            padding: 0 1em;
+            margin: 0;
+            button {
+                float: none;
+                margin: 0 0.25em;
+            }
         }
     }
+
     .content {
         color: #333;
         text-shadow: none;
+        padding: 0 1em;
     }
 }
 
@@ -194,13 +199,16 @@ img.f-avatar {
 
 .f-trade table {
     width: 100%;
-    font-size: 0.8em;
+    font-size: 80%;
     td:first-child {
         min-width: 25%;
     }
-
     button {
+        font-size: 125%;
         float: right;
+        * {
+            font-size: 1.01em;
+        }
     }
 }
 
@@ -210,12 +218,27 @@ img.f-avatar {
 // -----------------------------------------------------------------------------
 .f-side-order-menu {
     margin-top: -1px;
+    ul {
+       width: 100%;
+    }
+    li {
+
+        width: 50%;
+    }
 }
 .f-order {
     input {
         width: 100%;
         height: 2em;
         margin: 0.5em 0;
+    }
+    .f-buttonbar {
+        text-align: right;
+        width: 100%;
+        button {
+            float: none;
+            margin: 0 0 0 0.5em;
+        }
     }
 }
 

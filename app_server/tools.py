@@ -2,15 +2,15 @@ import dateutil
 from app_server.config import *
 from app_server.models import *
 from websocket import create_connection
-
+import dateutil.parser
 
 db = SqliteDatabase(DATABASE)
 
-
 def wsSend(message):
-    ws = create_connection(WEBSOCKETS_URI)
+    ws = create_connection(WEBSOCKETS_URI, timeout=2)
     ws.send(message)
     ws.close()
+
 
 def datetime_adapter(obj, request):
     return obj.isoformat()
@@ -31,7 +31,7 @@ def handle_order(order):
             order.open = datetime.datetime.now()
             order.open_value = last_price().value
             order.save()
-        updateLedger(order)
+            updateLedger(order)
         return order
 
 
@@ -39,7 +39,7 @@ def handle_order(order):
     if order.open_value and order.amount:
         with db.atomic() as txn:
             order.save()
-            updateLedger(order)
+            wsSend('MESSAGE;reload;orders;' + str(order.user.id))
             return order
 
     return {'message': 'Something was wrong with this order.'}
@@ -54,7 +54,7 @@ def fillOrders(price, db):
     vmin = v - v/1000 # 0.001% down
     # Fill outstanding orders
     with db.atomic() as txn:
-        # Execute market orders
+        # Execute limit orders
         orders = Order.select().where(
             Order.open_value.between(vmin, vmax),
             Order.open == None,
@@ -104,21 +104,17 @@ Ledger updater
 '''
 def updateLedger(order):
     order = order.refresh()  # refresh order from db
+    ledger = order.user.ledgers.where(Ledger.asset == order.base).first()
 
     # For freshly opened orders
     if not order.close:
-        value = order.open_value
+        ledger.value -= order.amount
 
     # For orders being closed
     if order.close:
-        open_value = order.amount * order.open_value #calculate value in BASE c. at open time
-        close_value = order.amount * order.close_value # we figure out value in BASE at close time
-        value = close_value - open_value # calculate the difference in price
-        if order.direction == False: # If order was "sell", the value is reversed
-            value = -value
+        ledger = order.user.ledgers.where(Ledger.asset == order.base).first()  # get ledger for the base c.
+        ledger.value += order.close_value - order.open_value  # add the value to ledger
 
-    ledger = order.user.ledgers.where(Ledger.asset==order.base).first() # get ledger for the base c.
-    ledger.value += value # add the value to ledger
     ledger.save() # save it
 
     # message clients to reload

@@ -1,5 +1,6 @@
 SEECRET = 'Extremely secretive seecret. You could not guess this one if your life depended on it.'
 DATABASE = 'db/data.db'
+DATABASE_PRICES = 'db/prices.db'
 SESSION_TTL = 240
 
 WEBSOCKETS_PORT= 7334

@@ -14,8 +14,8 @@ import sqlite3
 
 
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
+db = SqliteDatabase(DATABASE_PRICES)
 
-db = SqliteDatabase(DATABASE)
 
 '''
 Data Formater
@@ -23,7 +23,7 @@ Data Formater
 def formatData(data):
     value = str(data['value'])
     instant = str(int(round(time.time() * 1000)))
-    return 'BTC;' + instant + ';' + value # We could parametrize 'BTC' for many different graphs, but we only have 1 runner now
+    return 'COIN;' + instant + ';' + value # We could parametrize 'COIN' for many different graphs, but we only have 1 runner now
 
 '''
 DB saver
@@ -100,7 +100,6 @@ class FakeData(WebSocket):
             # Any other message than ident originates from server,
             # so we simpli forward it to the right client
             else:
-                print('Recieved message for user %s' % int(id))
                 clients[int(id)].sendMessage(self.data)
 
 

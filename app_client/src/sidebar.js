@@ -1,5 +1,5 @@
 import Component from 'inferno-component'
-import { users, orders, transformDate, WSConnection } from './resources'
+import { users, orders, user_data, transformDate, WSConnection } from './resources'
 import {hasClass, addClass, removeClass} from './manipulators'
 import SidebarOrders from './sidebar_orders'
 import SidebarNewOrder from './sidebar_new_order'
@@ -8,7 +8,7 @@ export class Sidebar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            value: {BTC: [0, 0]},
+            value: {COIN: [0, 0]},
             trades: [],
             orders: [],
             history: [],
@@ -35,13 +35,15 @@ export class Sidebar extends Component {
             // We send user ID and hash as ident immediately back
             if(what=='ident') self.w.send(`MESSAGE;ident;${data};${this.state.user.id}`)
             // We reload orders if needed
-            if(what=='reload' & data == 'orders') 
+            if(what=='reload' & data == 'orders')
+                // We actually have to
                 orders.get()
                 .then(o => {
                     this.state.user.orders = o
                     this.updateNav(this.state.value[0])
+                    // we actually have to pudate user's ledgers too
+                    user_data.get().then(r => this.state.user.ledgers = r.ledgers)
                 })
-
 
             // Then run our course
             if(reason!='MESSAGE') self.updateAssetValues(evt)
@@ -58,7 +60,7 @@ export class Sidebar extends Component {
             .map(n => n.includes('.') ? parseFloat(n) : parseInt(n) ? parseInt(n) : n)
 
         this.state.user.ledgers.forEach(l => {
-            if(!asset) return
+            if(!value[asset]) return
             value[asset] = [v, value[asset][0]]
         })
         this.setState({value})
@@ -70,16 +72,16 @@ export class Sidebar extends Component {
 
         // Update upper portion of screen with data
         this.updateNav(v)
+
+
     }
 
     // calculate some values for template later on
     calcOrderDetails(order) {
-        let current_value = order.amount * self.state.value.BTC[0]
-        let open_value = order.amount * order.open_value
-        let direction = order.direction ? 1 : -1
-        order.distance_to_open = current_value - open_value
-        order.earnings = order.distance_to_open * direction
-        order.earnings_percent = order.distance_to_open / open_value * 100  * direction
+        order.percent_gain = (self.state.value.COIN[0] / order.open_value - 1) * 100  // 100% ok
+        order.earnings = self.state.value.COIN[0] - order.open_value
+        order.amount_in_quote = order.amount / order.open_value // 100% ok
+        order.distance_to_open = self.state.value.COIN[0] - order.open_value
         return order
     }
 
@@ -89,12 +91,18 @@ export class Sidebar extends Component {
         let open_trades = this.state.user.orders.filter(o => 
             o.open != null && o.status == true
         )
+        // if we have no open trades, we leave
+        if(open_trades.length == 0) {
+            let nav = this.state.user.ledgers[0].value
+            this.setState({nav})
+            return
+        }
         // Calculate total gain
-        let total_gain = open_trades
-            .map(o => o.earnings * (o.direction ? 1 : -1) )
+        let total_earnings = open_trades
+            .map(o => o.earnings )
             .reduce((a,v) => a + v, 0)
         
-        let nav = this.state.user.ledgers[0].value + total_gain
+        let nav = this.state.user.ledgers[0].value + total_earnings
         this.setState({nav})
     }
 
@@ -122,7 +130,7 @@ export class Sidebar extends Component {
                 </div>
                 
 
-                < SidebarNewOrder value={this.state.value.BTC[0]}  state={this.state}/>
+                < SidebarNewOrder value={this.state.value.COIN[0]} user={this.state.user}/>
 
                 <SidebarOrders state={this.state} />
 

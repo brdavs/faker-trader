@@ -7,12 +7,20 @@ import datetime
 
 
 db = SqliteDatabase(DATABASE)
+dbp = SqliteDatabase(DATABASE_PRICES)
 
 class BaseModel(Model):
     class Meta:
         database = db
     def refresh(self):
         return type(self).get(self._pk_expr())
+
+class BaseModelPrices(Model):
+    class Meta:
+        database = db
+    def refresh(self):
+        return type(self).get(self._pk_expr())
+
 
 class User(BaseModel):
     username = CharField(null=False, unique=True)
@@ -39,23 +47,22 @@ class Order(BaseModel):
     comment = TextField(null=True)
     status = BooleanField(null=False, default=True)
 
-
-class Price(BaseModel):
-    asset = ForeignKeyField(Asset, backref='prices', null=True)
-    datetime = DateTimeField(formats=['%Y-%m-%d %H:%M:%S.%f'], default=datetime.datetime.now, null=False)
-    value = FloatField(null=False)
-
-
 class Ledger(BaseModel):
     user = ForeignKeyField(User, backref='ledgers')
     asset = ForeignKeyField(Asset, backref='ledgers', null=True)
     value = FloatField(null=False)
 
+class Price(BaseModelPrices):
+    asset = ForeignKeyField(Asset, backref='prices', null=True)
+    datetime = DateTimeField(formats=['%Y-%m-%d %H:%M:%S.%f'], default=datetime.datetime.now, null=False)
+    value = FloatField(null=False)
 
 
 if __name__ == '__main__':
     db.connect()
-    db.create_tables([User, Asset, Order, Price, Ledger])
+    db.create_tables([User, Asset, Order, Ledger])
+    dbp.connect()
+    dbp.create_tables([Price])
 
     # Create default stuff (Money)
     for mu in 'EUR COIN'.split(' '):
