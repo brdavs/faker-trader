@@ -12,13 +12,17 @@ export class Login extends Component {
 
     componentWillMount() {
         users.get().then(users => this.setState({users}))
+
+
     }
 
     render() {
 
         return (
             <div class="pure-g f-login">
+                <div id="particles-js"></div> { /* Amusement bit */}
                 <div class="pure-u-1 pure-u-md-2-3">
+                
                     <div class="f-pad">
                         <div class="f-login-form">
                             <h3>New trader youngling:</h3>

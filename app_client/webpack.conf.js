@@ -40,7 +40,7 @@ let conf = {
 				],
 			},
 			{
-				test: /\.(png|jpg|gif|svg)$/,
+				test: /\.(png|jpg|gif|svg|svg|json)$/,
 				loader: 'url-loader'
 			},
 			{
