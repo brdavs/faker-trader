@@ -7,9 +7,12 @@ import dateutil.parser
 db = SqliteDatabase(DATABASE)
 
 def wsSend(message):
-    ws = create_connection(WEBSOCKETS_URI, timeout=2)
-    ws.send(message)
-    ws.close()
+    try:
+        ws = create_connection(WEBSOCKETS_URI, timeout=2)
+        ws.send(message)
+        ws.close()
+    except:
+        pass
 
 
 def datetime_adapter(obj, request):
@@ -113,7 +116,8 @@ def updateLedger(order):
     # For orders being closed
     if order.close:
         ledger = order.user.ledgers.where(Ledger.asset == order.base).first()  # get ledger for the base c.
-        ledger.value += order.amount + order.close_value - order.open_value  # add the value to ledger
+        direction = 1 if order.direction else -1
+        ledger.value += order.amount + (order.close_value - order.open_value) * direction # add the value to ledger
 
     ledger.save() # save it
 

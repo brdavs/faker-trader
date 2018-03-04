@@ -24,7 +24,7 @@ export class Login extends Component {
                             <h3>New trader youngling:</h3>
                             <form class="pure-form">
                                 <fieldset>
-                                    <input type="text" placeholder="Username" onChange={this.updateUsername()} value={this.state.user.username} />
+                                    <input type="text" placeholder="Username" onInput={this.updateUsername()}  />
                                 </fieldset>
                                 <button type="submit" class="pure-button pure-button-primary" onClick={this.login()}>Create</button>
                             </form>

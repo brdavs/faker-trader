@@ -55,8 +55,12 @@ export class SidebarOrders extends Component {
         return earnings
     }
 
-    modalMonger(which) {
-        return e => { this.state.modal[which] = !this.state.modal[which] }
+    modalMonger(self, which, trade) {
+        return e => {
+            let modal = self.state.modal
+            modal[which] = trade
+            self.setState({modal})
+        }
     }
 
     render() {
@@ -107,11 +111,11 @@ export class SidebarOrders extends Component {
                             <tr>
                                 <td colspan="2">
                                     <button class="pure-button pure-button-primary" type="button" 
-                                            onClick={this.modalMonger('closeTrade')} >
+                                            onClick={this.modalMonger(this, 'closeTrade', t)} >
                                         Close trade
                                     </button>
                                     {this.state.modal.closeTrade ?
-                                    <ModalCloseTrade user={this.state.user} modal={this.state.modal} trade={t}/>
+                                        <ModalCloseTrade user={this.state.user} modal={this.state.modal} trade={this.state.modal.closeTrade}/>
                                     :null}
                                 </td>
                             </tr>

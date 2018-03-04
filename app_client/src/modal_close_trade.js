@@ -19,22 +19,19 @@ export class ModalCloseTrade extends Component {
             this.setState({content: this.state.content})
     }
 
-    askWithModal(e) {
-        let el = e ? e.srcElement.querySelector('.f-modal.hidden') : false
-        if(el) {
-            removeClass(el, 'hidden')
-            this.setState({visible_el: el})
-        } else if (this.state.visible_el) {
-            addClass(this.state.visible_el, 'hidden')
-            this.setState({visible_el: false})
-        }
-    }
-
     CloseTrade(trade, user) {
         let modal_self = this
         trade.close = (new Date()).toISOString()
         orders(trade.id).put(trade)
         this.state.modal.closeTrade = false
+    }
+    
+    cancel(self) {
+        return e => {
+            let modal = this.state.modal
+            modal.closeTrade = false
+            self.setState({modal})
+        }
     }
 
 
@@ -45,7 +42,7 @@ export class ModalCloseTrade extends Component {
                     <h2>Closing position no. {this.state.trade.id}</h2>
                     <div class="content">{this.state.message}</div>
                     <div class="f-buttonbar">
-                        <button class="pure-button" onClick={(e)=>{ this.state.modal.closeTrade = false }}>Cancel</button>
+                        <button class="pure-button" XonClick={(e)=>{ this.state.modal.closeTrade = false }} onClick={this.cancel(this)}>Cancel</button>
                         <button class="pure-button pure-button-primary" onClick={(e)=>{ this.CloseTrade(this.state.trade, this.state.user) }}>Close</button>
                     </div>
                 </div>

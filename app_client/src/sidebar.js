@@ -4,13 +4,14 @@ import {hasClass, addClass, removeClass} from './manipulators'
 import SidebarOrders from './sidebar_orders'
 import SidebarNewOrder from './sidebar_new_order'
 
-const w = WSConnection
-
 export class Sidebar extends Component {
     constructor(props) {
         super(props)
         this.state = {
             value: {COIN: [0, 0]},
+            trades: [],
+            orders: [],
+            history: [],
             nav: 0,
             gain: 0,
             user: props.user,
@@ -22,6 +23,7 @@ export class Sidebar extends Component {
         this.w = WSConnection
         this.w.onopen = (evt) => { /* self.w.send('MESSAGE;ident;'+this.state.user.id) */ }
         this.w.onmessage = (evt) => {
+            self = this
             /**
              * WEBSOCKET BROKER... might want to put it somewhere else
              */
@@ -62,7 +64,7 @@ export class Sidebar extends Component {
 
         // calculate additional order values
         let user = this.state.user
-        user.orders = user.orders.map(self.calcOrderDetails)
+        user.orders = user.orders.map(o => self.calcOrderDetails(self, o))
         this.setState({user})
 
         // Update upper portion of screen with data
@@ -70,9 +72,9 @@ export class Sidebar extends Component {
     }
 
     // calculate some values for template later on
-    calcOrderDetails(order) {
+    calcOrderDetails(self, order) {
         order.percent_gain = (self.state.value.COIN[0] / order.open_value - 1) * 100  // 100% ok
-        order.earnings = self.state.value.COIN[0] - order.open_value
+        order.earnings = (self.state.value.COIN[0] - order.open_value) * (order.direction ? 1 : -1)
         order.amount_in_quote = order.amount / order.open_value // 100% ok
         order.distance_to_open = self.state.value.COIN[0] - order.open_value
         return order
@@ -87,7 +89,9 @@ export class Sidebar extends Component {
         // if we have no open trades, we leave
         if(open_trades.length == 0) {
             let nav = this.state.user.ledgers[0].value
+            let gain = 0
             this.setState({nav})
+            this.setState({gain})
             return
         }
         // Calculate total gain and amounts
@@ -126,9 +130,9 @@ export class Sidebar extends Component {
                 </div>
                 
 
-                <SidebarNewOrder value={this.state.value.COIN[0]} user={this.state.user}/>
+                < SidebarNewOrder value={this.state.value.COIN[0]} user={this.state.user}/>
 
-                <SidebarOrders user={this.state.user} value={this.state.value.COIN[0]} />
+                <SidebarOrders user={this.state.user} />
 
 
             </div>

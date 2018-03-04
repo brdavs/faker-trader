@@ -28,7 +28,7 @@ def formatData(data):
 '''
 DB saver
 '''
-def presistData(p, conn):
+def presistData(p, conn=db):
     c = conn.cursor()
     instant = datetime.datetime.now()
     c.execute('INSERT INTO price VALUES( NULL, 1, ?, ?)', (instant, p['value']))
@@ -39,7 +39,6 @@ def presistData(p, conn):
 Simple fake data generator function
 '''
 def generator(p, clients):
-    conn = sqlite3.connect(DATABASE)
     def mover(seconds, distance, p):
         s = seconds
         d = random.uniform(-distance, distance+0.0001)
@@ -67,7 +66,7 @@ def generator(p, clients):
         thread.start()
 
     while True:
-        presistData(p, conn) # Presist to database
+        presistData(p)
         fillOrders(p, db) # Fill outstanding orders
         marginCallMonitor(p) # Monitor for margin calls
         for client in clients.values(): # Just send this drivel to all clients

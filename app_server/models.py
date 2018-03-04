@@ -17,7 +17,7 @@ class BaseModel(Model):
 
 class BaseModelPrices(Model):
     class Meta:
-        database = db
+        database = dbp
     def refresh(self):
         return type(self).get(self._pk_expr())
 
@@ -63,6 +63,7 @@ if __name__ == '__main__':
     db.create_tables([User, Asset, Order, Ledger])
     dbp.connect()
     dbp.create_tables([Price])
+
 
     # Create default stuff (Money)
     for mu in 'EUR COIN'.split(' '):

@@ -37,7 +37,8 @@ echo "Initializing database"
 cd ./app_server
 mkdir db
 touch db/data.db
-rm db/data.db && python models.py
+rm db/data.db
+python models.py
 
 
 # ------------------------------------------------------------------------------
