@@ -1,12 +1,17 @@
 <html>
 <head>
-  <title>Faker trader 0.1</title>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/combine/npm/purecss@1.0.0/build/pure-min.css,npm/purecss@1.0.0/build/grids-responsive-min.css">
-  <script src="//cdn.jsdelivr.net/combine/npm/d3@4.13.0,npm/techan@0.8.0"></script>
+    <title>Faker trader 0.1</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/combine/npm/purecss@1.0.0/build/pure-min.css,npm/purecss@1.0.0/build/grids-responsive-min.css?external.css">
+    <script src="//cdn.jsdelivr.net/combine/npm/d3@4.13.0,npm/techan@0.8.0,npm/particles.js@2.0.0?external.js"></script>
+    <script>
+        particlesJS.load('particles-js', '/assets/particle.json', function() {
+            console.log('callback - particles.js config loaded');
+        });
+    </script>
 <link href="/assets/main.css" rel="stylesheet"></head>
 <body>
-  <div id="faker_trader"></div>
+    <div id="faker_trader"></div>
 <script type="text/javascript" src="/assets/main.js"></script></body>
 </html>
