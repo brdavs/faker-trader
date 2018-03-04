@@ -8,24 +8,30 @@ import ModalCloseTrade from './modal_close_trade'
 
 export class SidebarOrders extends Component {
 	constructor(props) {
-		super(props)
-        this.state = props.state;
+        super(props)
+        this.state = {
+            user: props.user,
+            open_trades: [],
+            open_orders: [],
+            historic_orders: [],
+            modal: {
+                closeTrade: false,
+                deleteOrder: false
+            }
+        }
     }
 
-
     componentWillReceiveProps(nextProps) {
-        Object.keys(nextProps.state).forEach(k => {
-            let item = {}
-            item[k] = nextProps.state[k]
-            this.setState(item)
-        })
+        this.setState({open_trades: this.getOpenTrades()})
+        this.setState({open_orders: this.getOpenOrders()})
+        this.setState({historic_orders: this.getHistoricOrders()})
     }
 
     /**
      * Custom methods
      */
 
-     getOpenTrades() {
+    getOpenTrades() {
         return this.state.user.orders.filter(o => 
             o.open != null && o.status == true
         )
@@ -49,6 +55,10 @@ export class SidebarOrders extends Component {
         return earnings
     }
 
+    modalMonger(which) {
+        return e => { this.state.modal[which] = !this.state.modal[which] }
+    }
+
     render() {
         return (
             <div class="pure-u-1">
@@ -68,7 +78,7 @@ export class SidebarOrders extends Component {
                     </ul>
                 </div>
                 <div class="f-pad f-nav f-trade" id="f_trades">
-                    {this.getOpenTrades().map(t =>
+                    {this.state.open_trades.map(t =>
                         <table>
                             <tr>
                                 <td>Order ID:</td><td>{t.id}</td>
@@ -96,7 +106,13 @@ export class SidebarOrders extends Component {
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <ModalCloseTrade user={this.state.user} trade={t}/>
+                                    <button class="pure-button pure-button-primary" type="button" 
+                                            onClick={this.modalMonger('closeTrade')} >
+                                        Close trade
+                                    </button>
+                                    {this.state.modal.closeTrade ?
+                                    <ModalCloseTrade user={this.state.user} modal={this.state.modal} trade={t}/>
+                                    :null}
                                 </td>
                             </tr>
                             <tr>
@@ -106,7 +122,7 @@ export class SidebarOrders extends Component {
                     )}
                 </div>
                 <div class="f-pad f-nav f-trade hidden" id="f_orders">
-                    {this.getOpenOrders().map(t =>
+                    {this.state.open_orders.map(t =>
                         <table>
                             <tr>
                                 <td>Order ID:</td><td>{t.id}</td>
@@ -138,7 +154,7 @@ export class SidebarOrders extends Component {
                     )}
                 </div>
                 <div class="f-pad f-nav f-trade hidden" id="f_history">
-                    {this.getHistoricOrders().map(t =>
+                    {this.state.historic_orders.map(t =>
                         <table>
                             <tr>
                                 <td>Order ID:</td><td>{t.id}</td>

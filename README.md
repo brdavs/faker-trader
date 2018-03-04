@@ -66,7 +66,7 @@ For client development I use a complete Node environment with a myriad of libs.
 
 ## Fine print
 
-* SQLite3 is rather sub-optimal for this type of operation. A proper way would be to store generated price data into a key-value store. I used 2 distinct databases. One is constantly updated with data, one holds user other data.
+* SQLite3 is rather sub-optimal for this type of operation. A proper way would be to store generated price data into a key-value store. I used 2 distinct databases. One is constantly updated with price data, one holds other data.
 * The chart is missing. I have yet to implement it.
 * There is no spread on trades.
 * Margin calls are not accurate.

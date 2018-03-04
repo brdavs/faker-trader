@@ -26,7 +26,7 @@ def handle_order(order):
 
     # If order has an old date to open it's a MARKET order
     # We need to fill it immediately
-    if not order.open_value and order.amount:
+    if not order.open_value and order.amount and order.status:
         with db.atomic() as txn:
             order.open = datetime.datetime.now()
             order.open_value = last_price().value
@@ -36,7 +36,7 @@ def handle_order(order):
 
 
     # If order has an open value it's a LIMIT order.
-    if order.open_value and order.amount:
+    if order.open_value and order.amount and order.status:
         with db.atomic() as txn:
             order.save()
             wsSend('MESSAGE;reload;orders;' + str(order.user.id))
@@ -113,7 +113,7 @@ def updateLedger(order):
     # For orders being closed
     if order.close:
         ledger = order.user.ledgers.where(Ledger.asset == order.base).first()  # get ledger for the base c.
-        ledger.value += order.close_value - order.open_value  # add the value to ledger
+        ledger.value += order.amount + order.close_value - order.open_value  # add the value to ledger
 
     ledger.save() # save it
 

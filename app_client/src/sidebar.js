@@ -4,21 +4,16 @@ import {hasClass, addClass, removeClass} from './manipulators'
 import SidebarOrders from './sidebar_orders'
 import SidebarNewOrder from './sidebar_new_order'
 
+const w = WSConnection
+
 export class Sidebar extends Component {
     constructor(props) {
         super(props)
         this.state = {
             value: {COIN: [0, 0]},
-            trades: [],
-            orders: [],
-            history: [],
             nav: 0,
+            gain: 0,
             user: props.user,
-            action: false,
-            visibility: {
-                trade: false,
-                overview: 1
-            },
         };
     }
 
@@ -41,7 +36,7 @@ export class Sidebar extends Component {
                 .then(o => {
                     this.state.user.orders = o
                     this.updateNav(this.state.value[0])
-                    // we actually have to pudate user's ledgers too
+                    // we actually have to update user's ledgers too
                     user_data.get().then(r => this.state.user.ledgers = r.ledgers)
                 })
 
@@ -72,8 +67,6 @@ export class Sidebar extends Component {
 
         // Update upper portion of screen with data
         this.updateNav(v)
-
-
     }
 
     // calculate some values for template later on
@@ -97,13 +90,13 @@ export class Sidebar extends Component {
             this.setState({nav})
             return
         }
-        // Calculate total gain
-        let total_earnings = open_trades
-            .map(o => o.earnings )
-            .reduce((a,v) => a + v, 0)
-        
-        let nav = this.state.user.ledgers[0].value + total_earnings
+        // Calculate total gain and amounts
+        let total_amounts = open_trades.reduce((a,v) => {return a + v.amount}, 0)
+        let gain = open_trades.reduce((a,v) => {return a + v.earnings}, 0)
+
+        let nav = this.state.user.ledgers[0].value + total_amounts + gain
         this.setState({nav})
+        this.setState({gain})
     }
 
     render() {
@@ -122,6 +115,9 @@ export class Sidebar extends Component {
                         <small class="">Net Asset Value</small>
                         <div class="f-ledger"><h3>{this.state.nav.toFixed(4)}</h3> <span>EUR</span></div>
                         <hr />
+                        <small class="">Current gain:</small>
+                        <div class="f-ledger"><h3>{this.state.gain.toFixed(4)}</h3> <span>EUR</span></div>
+                        <hr />
                         <small class="">Current COIN value</small>
                         {Object.keys(this.state.value).map(k =>
                             <div class="f-ledger"><h3>{this.state.value[k][0].toFixed(4)}</h3> <span>EUR</span></div>
@@ -130,9 +126,9 @@ export class Sidebar extends Component {
                 </div>
                 
 
-                < SidebarNewOrder value={this.state.value.COIN[0]} user={this.state.user}/>
+                <SidebarNewOrder value={this.state.value.COIN[0]} user={this.state.user}/>
 
-                <SidebarOrders state={this.state} />
+                <SidebarOrders user={this.state.user} value={this.state.value.COIN[0]} />
 
 
             </div>

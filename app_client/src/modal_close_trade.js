@@ -8,6 +8,7 @@ export class ModalCloseTrade extends Component {
 		this.state = {
             trade: props.trade,
             user: props.user,
+            modal: props.modal,
             visible_el: false,
             message: 'Please confirm liquidation of position.'
         };
@@ -33,24 +34,22 @@ export class ModalCloseTrade extends Component {
         let modal_self = this
         trade.close = (new Date()).toISOString()
         orders(trade.id).put(trade)
+        this.state.modal.closeTrade = false
     }
 
 
     render() {
         return (
-            <button class="pure-button pure-button-primary" onClick={(e)=>{ this.askWithModal(e) }}>
-                Close trade
-                <div class="f-modal hidden">
-                    <div class="f-window f-warning">
-                        <h2>Closing position no. {this.state.trade.id}</h2>
-                        <div class="content">{this.state.message}</div>
-                        <div class="f-buttonbar">
-                            <button class="pure-button" onClick={(e)=>{ this.askWithModal(e) }}>Cancel</button>
-                            <button class="pure-button pure-button-primary" onClick={(e)=>{ this.CloseTrade(this.state.trade, this.state.user) }}>Close</button>
-                        </div>
+            <div class="f-modal">
+                <div class="f-window f-warning">
+                    <h2>Closing position no. {this.state.trade.id}</h2>
+                    <div class="content">{this.state.message}</div>
+                    <div class="f-buttonbar">
+                        <button class="pure-button" onClick={(e)=>{ this.state.modal.closeTrade = false }}>Cancel</button>
+                        <button class="pure-button pure-button-primary" onClick={(e)=>{ this.CloseTrade(this.state.trade, this.state.user) }}>Close</button>
                     </div>
                 </div>
-            </button>
+            </div>
         )
     }
 

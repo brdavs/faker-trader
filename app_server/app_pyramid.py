@@ -203,8 +203,6 @@ class OrderView(object):
                     status = False
                 ).where(Order.id == order.id)
                 query.execute()
-                # Update ledger
-                # with db.atomic() as txn:
                 updateLedger(order)
 
             out = {'success': 'You successfully closed order'}
