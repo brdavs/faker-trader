@@ -11,6 +11,7 @@ function FakerTrader({ children }) {
 
     return (
 		<div class="faker_trader">
+			{!authenticated ? <div id="particles-js"></div> : <div id="particles-js" style="display: none;"></div>} { /* Amusement bit */}
 			{authenticated ? 
 				<Dashboard /> :
 				<Login />

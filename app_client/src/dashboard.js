@@ -1,6 +1,6 @@
 import Component from 'inferno-component'
 import cookie from 'cookie'
-import { users, orders, user_data } from './resources'
+import { users, orders, user_data, WSConnection } from './resources'
 import Sidebar from './sidebar'
 import MainContent from './main'
 
@@ -8,7 +8,8 @@ export class Dashboard extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			user: {},
+            user: {},
+            ws: [],
 		};
     }
 
@@ -48,7 +49,7 @@ export class Dashboard extends Component {
                     {/* Side bar */}
                     <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-4 pure-u-xl-1-5">
                         {this.state.user.id ?
-                            <Sidebar user={this.state.user} />
+                            <Sidebar user={this.state.user} ws={this.state.ws}/>
                         : null}
                     </div>
 
@@ -56,7 +57,7 @@ export class Dashboard extends Component {
                     <div class="pure-u-1 pure-u-md-2-3 pure-u-lg-3-4 pure-u-xl-4-5">
                         <div class="f-pad">
                             {this.state.user.id ?
-                                <MainContent />
+                                <MainContent ws={this.state.ws}/>
                             : null}
                         </div>
                     </div>

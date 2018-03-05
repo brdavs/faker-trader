@@ -20,7 +20,6 @@ export class Login extends Component {
 
         return (
             <div class="pure-g f-login">
-                <div id="particles-js"></div> { /* Amusement bit */}
                 <div class="pure-u-1 pure-u-md-2-3">
                 
                     <div class="f-pad">

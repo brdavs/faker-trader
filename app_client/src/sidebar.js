@@ -15,6 +15,7 @@ export class Sidebar extends Component {
             nav: 0,
             gain: 0,
             user: props.user,
+            ws: props.ws
         };
     }
 
@@ -41,6 +42,9 @@ export class Sidebar extends Component {
                     // we actually have to update user's ledgers too
                     user_data.get().then(r => this.state.user.ledgers = r.ledgers)
                 })
+            
+            // Then run anything that should be run on feed
+            self.state.ws.forEach(f => f(evt.data))
 
             // Then run our course
             if(reason!='MESSAGE') self.updateAssetValues(evt)
