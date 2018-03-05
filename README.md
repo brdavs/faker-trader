@@ -15,6 +15,7 @@ I have purposefully left out all Node related stuff for client development. Ther
 
 So basically you need:
 - C compiler and related build utils (build-essential on Ubuntu)
+- Sqlite3 development libs
 - wget (for fetching the pyton)
 - bash (standard shell)
 - some time, as creating a virtual env takes some time
@@ -58,8 +59,7 @@ IE has not (and will not) be tested.
 #### Client
 - Inferno.js
 - Purecss
-- TechanJS (not yet)
-- D3
+- TechanJS (with D3)
 
 For client development I use a complete Node environment with a myriad of libs.
 
