@@ -1,14 +1,12 @@
 import Component from 'inferno-component'
-import { orders, WSConnection } from './resources'
-
-const ws = WSConnection
+import { prices } from './resources'
 
 export class MainContent extends Component {
 	constructor(props) {
         super(props)
         this.state = {
             data: [],
-            by: 10, // This would be time in seconds
+            by: 60, // This would be time in seconds
             ws: props.ws
         }
     }
@@ -44,7 +42,7 @@ export class MainContent extends Component {
                 data[data.length-1].low = value < data[data.length-1].low ? value : data[data.length-1].low
                 data[data.length-1].close = value
             }
-            if(data.length > 260) data.shift()
+            if(data.length > 200) data.shift()
             self.setState({data})
         }
     }
@@ -155,7 +153,7 @@ export class MainContent extends Component {
                 .text("Price ($)")
 
             // Data to display initially
-            draw(data.slice(0, data.length - 20))
+            // draw(data.slice(0, data.length - 20))
             // Only want this button to be active if the data has loaded
             // d3.select(btn).on("click", function () { draw(data) }).style("display", "inline")
 
@@ -176,10 +174,21 @@ export class MainContent extends Component {
                     draw(self.state.data)
                 }
             }
-            // Make it execute on every feed
-            self.state.ws.push(drawToChart(self, draw, candlestick))
-            self.setState({ws: self.state.ws})
-
+            // Get historic data
+            prices(self.state.by).get()
+                .then(data => {
+                    data = data.map(d => {
+                        d.date = new Date(d.date)
+                        return d
+                    })
+                    self.setState({data})
+                    draw(self.state.data)
+                })
+                .then(r => {
+                    // Update it afterwards on every tick
+                    self.state.ws.push(drawToChart(self, draw, candlestick))
+                    self.setState({ws: self.state.ws})
+                })
         })
     }
 
@@ -191,8 +200,8 @@ export class MainContent extends Component {
                 <p>This is a nasty implementation of charts.</p>
                 <p>In order to implement this I would (at least) need to:</p>
                 <ul>
-                <li>Read data from DB and push it to chart first, before feeding it new data</li>
-                <li>Design the chart to show different timeframes (they are already prepared, but I only use a 10s timeframe)</li>
+                <li>Generate some fake data at start time.</li>
+                <li>Design the chart to show different timeframes (they are already prepared, but I only use a 60s timeframe)</li>
                 <li>Design the chart to look better</li>
                 <li>Fix the fake data algorithm to make it more realistic.</li>
                 </ul>
@@ -203,8 +212,3 @@ export class MainContent extends Component {
 }
 
 export default MainContent
-
-
-
-
-

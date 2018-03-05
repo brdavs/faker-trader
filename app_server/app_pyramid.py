@@ -240,6 +240,41 @@ class OrderView(object):
 
 
 
+@view_defaults(route_name='price', renderer='json')
+class PriceView(object):
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def feed(self):
+        out = []
+        s = int(self.request.matchdict.get('seconds'))
+        if not s:
+            return []
+        now = datetime.datetime.now()
+        then = now - datetime.timedelta(seconds=s * 200)
+        records = Price.select().where(Price.datetime > then)
+        for record in records:
+            rounded = roundTime(record.datetime, s)
+            if not out or out[-1].get('date') != rounded:
+                out.append({
+                    'date': rounded,
+                    'open': record.value,
+                    'high': record.value,
+                    'low': record.value,
+                    'close': record.value,
+                    'volume': 0
+                })
+            else:
+                out[-1]['high'] = out[-1]['high'] if out[-1]['high'] > record.value else record.value
+                out[-1]['low'] = out[-1]['low'] if out[-1]['low'] < record.value else record.value
+                out[-1]['close'] = record.value
+
+        return out
+
+
+
+
 # Serve Index
 def index(request):
     return FileResponse(
@@ -275,6 +310,11 @@ def app_pyramid():
         config.add_view(OrderView, attr='create_item', route_name='orders', request_method='POST')
         config.add_view(OrderView, attr='update_item', route_name='order', request_method='PUT')
         config.add_view(OrderView, attr='delete_item', route_name='order', request_method='DELETE')
+
+        # PRICE view
+        config.add_route('prices', '/api/prices/{seconds}')
+        config.add_view(PriceView, attr='feed', route_name='prices', request_method='GET')
+
 
         # init static files
         config.add_static_view(name='assets', path=os.path.dirname(os.path.realpath(__file__))+'/assets')

@@ -17,6 +17,11 @@ const user_data = fetchival('/api/user_data', {
     credentials: 'same-origin'
 })
 
+const prices = fetchival('/api/prices', {
+    // xhrFields: { withCredentials: true },
+    credentials: 'same-origin'
+})
+
 var WSConnection = new WebSocket('ws://localhost:7334')
 WSConnection.onclose = (evt) => {
     console.log('Socket closed down. Attempting to reconnect.', evt)
@@ -54,4 +59,4 @@ function transformDate(d) {
 }
 
 
-export {users, orders, user_data, WSConnection, transformDate, toggleVisibility}
+export {users, orders, prices, user_data, WSConnection, transformDate, toggleVisibility}
