@@ -67,12 +67,11 @@ For client development I use a complete Node environment with a myriad of libs.
 ## Fine print
 
 * SQLite3 is rather sub-optimal for this type of operation. A proper way would be to store generated price data into a key-value store. I used 2 distinct databases. One is constantly updated with price data, one holds other data.
-* The chart is missing. I have yet to implement it.
+* The chart somewhat awful.
 * There is no spread on trades.
-* Margin calls are not accurate.
+* Margin calls are not accurate. They initiate, but can go into negative.
 * Price can go into negative *(yes, that's how bad the algorithm is)
-* there are quirks and kinks all over the place (4 days of work for the entire project)
-* I am searching for a good job. (this was intentional).
+* there are quirks and kinks all over the place (7 days of work for the entire project)
 
 ##### Licencing information:
 This software carries a [MIT](https://opensource.org/licenses/MIT) License.  
